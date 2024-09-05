@@ -1,28 +1,50 @@
 import { format, formatDistanceToNow } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
+import { ptBR } from 'date-fns/locale';
 import { Avatar } from './Avatar'
 import { Comment } from './Comment'
 import styles from './Post.module.css'
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
-export function Post({ author, publishedAt, content }) {
-  const [comments, setComments] = useState([]);
+interface Author {
+  name: string;
+  role: string;
+  avatarUrl: string;
+}
+
+interface Content {
+  type: 'paragraph' | 'link';
+  content: string
+}
+
+export interface PostType {
+  id: number;
+  author: Author;
+  publishedAt: Date;
+  content: Content[];
+}
+
+interface PostProps {
+  post: PostType
+}
+
+export function Post({ post }: PostProps) {
+  const [comments, setComments] = useState<string[]>([]);
   const [newCommentText, setNewCommentText] = useState('')
-  const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm", {
+  const publishedDateFormatted = format(post.publishedAt, "d 'de' LLLL 'às' HH:mm", {
     locale: ptBR,
   })
-  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+  const publishedDateRelativeToNow = formatDistanceToNow(post.publishedAt, {
     locale: ptBR,
     addSuffix: true
   })
 
-  function handleCreateNewComment(e) {
-    e.preventDefault();
+  function handleCreateNewComment(event: FormEvent) {
+    event.preventDefault();
     setComments([...comments, newCommentText])
     setNewCommentText("");
   }
 
-  function deleteComment(content) {
+  function deleteComment(content: string) {
     const commentsWithoutDeletedOne = comments.filter(c => c !== content);
     setComments(commentsWithoutDeletedOne);
   }
@@ -33,16 +55,16 @@ export function Post({ author, publishedAt, content }) {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src={author.avatarUrl}/>
+          <Avatar src={post.author.avatarUrl}/>
           <div className={styles.authorInfo}>
-            <strong>{author.name}</strong>
-            <span>{author.role}</span>
+            <strong>{post.author.name}</strong>
+            <span>{post.author.role}</span>
           </div>
         </div>
 
         <time 
           title={publishedDateFormatted}
-          dateTime={publishedAt.toISOString() }
+          dateTime={post.publishedAt.toISOString() }
         >
           {publishedDateRelativeToNow}
         </time>
@@ -50,7 +72,7 @@ export function Post({ author, publishedAt, content }) {
 
       <div className={styles.content}> 
         {
-          content.map((line, i) => {
+          post.content.map((line, i) => {
             if (line.type === 'paragraph') {
               return <p key={i}>{line.content}</p>
             } else if (line.type === 'link') {

@@ -1,11 +1,11 @@
-import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
-import { Post } from './components/Post';
+import { Header } from './components/Header.tsx';
+import { Sidebar } from './components/Sidebar.tsx';
+import { Post, PostType } from './components/Post.tsx';
 import styles from './App.module.css'
 import './global.css'
 
 export function App() {
-  const posts = [
+  const posts: PostType[] = [
     {
       id: 1,
       author: {
@@ -47,9 +47,7 @@ export function App() {
               return (
                 <Post
                   key={p.id}
-                  author={p.author}
-                  content={p.content}
-                  publishedAt={p.publishedAt}
+                  post={p}
                 />
               )
             })
