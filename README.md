@@ -1,6 +1,7 @@
 
 # Ignite Feed Application 
-This project is a **Feed application**  developed using **React** , **TypeScript** , and **Vite** . The project is part of the **Rocketseat Ignite course** , where I followed along with the instructions and coded it while watching the lessons. The goal was to solidify my understanding of modern web development practices and improve my TypeScript skills.
+This project is a **Feed application**  developed using **React**, **TypeScript**, and **Vite**. The project is part of the **Rocketseat Ignite course**. In this project, I followed the instructions and coded it while watching the lessons. The goal was to solidify my understanding of modern web development practices and improve my TypeScript skills.
+
 ## Features 
 
 - Display posts with author information and published date.
